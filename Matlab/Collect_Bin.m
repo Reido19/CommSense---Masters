@@ -18,21 +18,24 @@ for n = 1:num_data_captures
 
     %Function to Colled IQ Data
     IQ = 0;                   % Uncomment to run default matlab example
-                                % data     
+    sr = 15.36e6;
+                                    
     % IQ = Band3Collector();    % Uncomment to collect fresh data using the USRP
+    % sr = 100e6/4;
     % IQ = block1(1:1.28e6);    % Uncomment to retreives IQ Data from
-                                % pre-collected data (block 1)
+    % sr = 12.8e6;              % pre-collected data (block 1)
 
+     
     % %Matlab Receiver to Demodulated Data
     LTE_struct = struct();
-    [LTE_struct, hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE_struct);
+    [LTE_struct, hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE_struct,sr);
     % SIB1RecoveryExample_edited();
     dataDump = [dataDump;hest(:,:,1)];
     rms_evm=[rms_evm;rmsevm];
     peak_evm = [peak_evm;peakevm];
     
     IQ_matrix = reshape(hest(:,:,1), columns, rows).'; 
-    matrix = [matrix;IQ_matrix]
+    matrix = [matrix;IQ_matrix];
     % pause(0.2);
 end
 

@@ -1,11 +1,11 @@
 %% Cell Search, MIB and SIB1 Recovery 
 
-function [LTE_struct,hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE_struct)
+function [LTE_struct,hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE_struct,sr)
     
     loadFromFile = 1; % Set to 0 to generate the eNodeB output locally
     LTE_struct.name = 'LTE Structure';
     LTE_struct.raw = IQ;
-
+    
     if loadFromFile
 
     % Custom IQ Data
@@ -17,7 +17,7 @@ function [LTE_struct,hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE
     % Inbuilt LTE Example Data
         load eNodeBOutput.mat           % Load I/Q capture of eNodeB output
         eNodeBOutput = double(eNodeBOutput)/32768; % Scale samples
-        sr = 15.36e6; 
+        % sr = 15.36e6; 
     %---------------------------------------
     else
         rmc = lteRMCDL('R.3'); %#ok<UNRCH>
