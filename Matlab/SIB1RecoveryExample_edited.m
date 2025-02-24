@@ -7,15 +7,18 @@ function [LTE_struct,hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE
     LTE_struct.raw = IQ;
 
     if loadFromFile
-        % eNodeBOutput = complex_reshape;
-        eNodeBOutput = IQ;
-        % eNode = resample(eNodeBOutput(:,i), 15360000, 25000000);
+
+    % Custom IQ Data
+    %--------------------------------------
+        % eNodeBOutput = IQ;
         % sr = 100e6/4;
-        sr = 12.8e6;
-        % sr=15.36e6; 
-        % load eNodeBOutput.mat           % Load I/Q capture of eNodeB output
-        % eNodeBOutput = double(eNodeBOutput)/32768; % Scale samples
-        % sr = 15.36e6; 
+        % % sr = 12.8e6;
+    % --------------------------------------
+    % Inbuilt LTE Example Data
+        load eNodeBOutput.mat           % Load I/Q capture of eNodeB output
+        eNodeBOutput = double(eNodeBOutput)/32768; % Scale samples
+        sr = 15.36e6; 
+    %---------------------------------------
     else
         rmc = lteRMCDL('R.3'); %#ok<UNRCH>
         rmc.NCellID = 17;

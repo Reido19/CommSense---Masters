@@ -4,6 +4,7 @@ num_data_captures = 1;
 filename = '/home/torps/CommSense/Datadump/Random_Testing/2/Bin/LTE_3_Omni_CRG_0_0.bin';
 filenameCSV = '/home/torps/CommSense/Datadump/Random_Testing/2/CSV/LTE_3_Omni_CRG_0_0.csv';
 file_raw = '/home/torps/CommSense/Datadump/Random_Testing/2/Raw/LTE_3_Omni_CRG_0_0.bin';
+
 dataDump = [];
 rms_evm = [];
 peak_evm = [];
@@ -15,9 +16,13 @@ columns = 600;
 
 for n = 1:num_data_captures
 
-    % %Function to Colled IQ Data
-    % IQ = Band3Collector();
-    IQ = block1(1:1.28e6);
+    %Function to Colled IQ Data
+    IQ = 0;                   % Uncomment to run default matlab example
+                                % data     
+    % IQ = Band3Collector();    % Uncomment to collect fresh data using the USRP
+    % IQ = block1(1:1.28e6);    % Uncomment to retreives IQ Data from
+                                % pre-collected data (block 1)
+
     % %Matlab Receiver to Demodulated Data
     LTE_struct = struct();
     [LTE_struct, hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE_struct);

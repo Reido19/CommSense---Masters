@@ -1,9 +1,10 @@
 
 % Loop to collect multiple sets of LTE DATA
 num_data_captures = 1;
-filename = '/home/torps/CommSense/Datadump/Random_Testing/Bin/LTE_3_Omni_CRG_0_1.bin';
-filenameCSV = '/home/torps/CommSense/Datadump/Random_Testing/CSV/LTE_3_Omni_CRG_0_1.csv';
-file_raw = '/home/torps/CommSense/Datadump/Random_Testing/Raw/LTE_3_Omni_CRG_0_1.bin';
+filename = '/home/torps/CommSense/Datadump/Random_Testing/2/Bin/LTE_3_Omni_CRG_0_0.bin';
+filenameCSV = '/home/torps/CommSense/Datadump/Random_Testing/2/CSV/LTE_3_Omni_CRG_0_0.csv';
+file_raw = '/home/torps/CommSense/Datadump/Random_Testing/2/Raw/LTE_3_Omni_CRG_0_0.bin';
+
 dataDump = [];
 rms_evm = [];
 peak_evm = [];
@@ -15,9 +16,11 @@ columns = 600;
 
 for n = 1:num_data_captures
 
-    % %Function to Colled IQ Data
-    % IQ = Band3Collector();
+    %Function to Colled IQ Data
+
+    % IQ = Band3Collector(); Uncomment to collect fresh data using the USRP
     IQ = block1(1:1.28e6);
+
     % %Matlab Receiver to Demodulated Data
     LTE_struct = struct();
     [LTE_struct, hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE_struct);
@@ -25,8 +28,8 @@ for n = 1:num_data_captures
     dataDump = [dataDump;hest(:,:,1)];
     rms_evm=[rms_evm;rmsevm];
     peak_evm = [peak_evm;peakevm];
-
-    IQ_matrix = reshape(new_data, num_cols, num_rows).'; 
+    
+    IQ_matrix = reshape(hest(:,:,1), columns, rows).'; 
     matrix = [matrix;IQ_matrix]
     % pause(0.2);
 end
@@ -37,9 +40,7 @@ data_rows = size(dataDump,1);
 extra1 = ones(data_rows,1);
 extra0 = zeros(data_rows,1);
 
-for i = 1:data_rows/600
-
-end
+writematrix(matrix, filenameCSV);
 
 disp("CSV File Written")
 
@@ -90,22 +91,22 @@ end
 fclose(fileID_raw);
 
 
-% Open a CSV file for writing
-fileID_csv = fopen(filenameCSV, 'w');
-
-% Check if the file was successfully opened
-if fileID_csv == -1
-    error('File csv could not be opened.');
-end
-
-% Combine real and imaginary parts into a single matrix
-IQ_data = [real(IQ(:)), imag(IQ(:))];
-
-% Write the IQ data to a CSV file
-writematrix(IQ_data, filenameCSV);
-
-% Close the file
-fclose(fileID_csv);
+% % % % % % Open a CSV file for writing
+% % % % % fileID_csv = fopen(filenameCSV, 'w');
+% % % % % 
+% % % % % % Check if the file was successfully opened
+% % % % % if fileID_csv == -1
+% % % % %     error('File csv could not be opened.');
+% % % % % end
+% % % % % 
+% % % % % % Combine real and imaginary parts into a single matrix
+% % % % % IQ_data = [real(IQ(:)), imag(IQ(:))];
+% % % % % 
+% % % % % % Write the IQ data to a CSV file
+% % % % % writematrix(IQ_data, filenameCSV);
+% % % % % 
+% % % % % % Close the file
+% % % % % fclose(fileID_csv);
 
 
 % Calculate SNR based on RMS and Peak EVM values
