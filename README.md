@@ -39,3 +39,10 @@ Pipeline structure:
 		- Displays a single dataframe to clarify no data has been lost along the way
 		- Runs PCA and displays the clustering results
 		- Runs SVD and displays the clustering results
+		
+	Binary_reader.py
+		- Reads in data from the Binary (.bin) files.
+		- Correctly orients data into the 600 subcarrier format that represents frequency slicing
+		
+	Transposer.py 
+		- Assists binary_reader
