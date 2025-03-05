@@ -1,6 +1,6 @@
 
 
-fileID = fopen('/home/torps/CommSense/Datadump/received.dat', 'rb');  % Open the file in binary mode
+fileID = fopen('/home/torps/CommSense/Datadump/Random_Testing/4/dat/reid_receive_1.dat', 'rb');  % Open the file in binary mode
 
 % Read the entire data as double (64 bits = 8 bytes per value)
 data = fread(fileID, 'double');  % 'double' reads 64-bit floating-point values
@@ -20,3 +20,4 @@ complexData = I + 1i * Q;
 % disp(complexData);
 complex_reshape = reshape(complexData,[],1);
 
+complex_reshape = complex_reshape(10e6:20e6);

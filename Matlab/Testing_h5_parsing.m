@@ -1,6 +1,6 @@
 clear all; clf; close all;
 
-filename = "LTETest1.h5";
+filename = "LTETest3.h5";
 temp = h5read(filename, '/SSNC_data');
 block1 = double(temp.real) + 1i * double(temp.imag);
 for (idx = 2:67)

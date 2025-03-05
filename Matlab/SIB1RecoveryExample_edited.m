@@ -1,22 +1,24 @@
 %% Cell Search, MIB and SIB1 Recovery 
 
-function [LTE_struct,hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE_struct,sr)
+function [LTE_struct,eqGrid, hest1, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE_struct,sr)
     
     loadFromFile = 1; % Set to 0 to generate the eNodeB output locally
     LTE_struct.name = 'LTE Structure';
     LTE_struct.raw = IQ;
-    
+    hest1= [];
     if loadFromFile
 
+
+    
     % Custom IQ Data
     %--------------------------------------
-        % eNodeBOutput = IQ;
+        eNodeBOutput = IQ;
         % sr = 100e6/4;
         % % sr = 12.8e6;
     % --------------------------------------
     % Inbuilt LTE Example Data
-        load eNodeBOutput.mat           % Load I/Q capture of eNodeB output
-        eNodeBOutput = double(eNodeBOutput)/32768; % Scale samples
+        % load eNodeBOutput.mat           % Load I/Q capture of eNodeB output
+        % eNodeBOutput = double(eNodeBOutput)/32768; % Scale samples
         % sr = 15.36e6; 
     %---------------------------------------
     else
@@ -169,7 +171,7 @@ function [LTE_struct,hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE
     cec.InterpType = 'cubic';             % 2D interpolation type
     cec.InterpWindow = 'Centered';        % Interpolation window type
     cec.InterpWinSize = 1;                % Interpolation window size  
-    
+    cec.Reference = 'CellRS';
     enb.CellRefP = 4;   
                         
     fprintf('Performing OFDM demodulation...\n\n');
@@ -351,7 +353,9 @@ function [LTE_struct,hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE
         rxsubframe = rxgrid(:,1:L,:);
         
         % Perform channel estimation
-        [hest,nest] = lteDLChannelEstimate(enb, cec, rxsubframe);    
+        [hest,nest] = lteDLChannelEstimate(enb, cec, rxsubframe); 
+        % [hest1,nest1] = lteDLChannelEstimate(enb, cec, rxgrid); 
+        % [hest1,nest1] = lteDLChannelEstimate(enb, cec, rxsubframe);
         
         fprintf('Decoding CFI...\n\n');
         pcfichIndices = ltePCFICHIndices(enb);  % Get PCFICH indices
@@ -456,12 +460,11 @@ function [LTE_struct,hest, rmsevm, peakevm] = SIB1RecoveryExample_edited(IQ, LTE
         hSIB1RecoveryExamplePlots(channelFigure);       % Comment out to remove display graphs
         % channelFigure.CurrentAxes.XLim = [0 size(hest,2)+1];
         % channelFigure.CurrentAxes.YLim = [0 size(hest,1)+1];
-
-        % eqGrid = lteEqualizeMMSE(rxsubframe,hest,nest);
-        % figure(channelFigure);                          % Equalization Sauce
-        % surf(abs(eqrid(:,:,1,1)));                       % Comment out to remove display graphs
-        % hSIB1RecoveryExamplePlots(channelFigure); 
-
+        
+        hest1 = [hest1;hest];
+        % eqGrid = lteEqualizeMMSE(rxsubframe,hest1,nest1);
+        % hDownlinkEstimationEqualizationResults(rxsubframe, eqGrid);
+        eqGrid = 0;
         % Skip 2 frames and try SIB1 decoding again, or terminate if we
         % have less than 2 frames left. 
         if (size(rxgrid,2)>=(L*20))
