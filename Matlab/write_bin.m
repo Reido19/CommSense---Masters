@@ -26,6 +26,6 @@ function write_bin(dataDump,filename)
     % fprintf('Read imaginary part: %.15f\n', imagPart);
     disp(size(realPart))
     disp(size(imagPart))
-    disp('Complex data has been written to complex.bin');
+    disp('Complex data has been written to filename');
 
 end

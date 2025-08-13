@@ -1,6 +1,6 @@
 
 
-fileID = fopen('/home/torps/CommSense/Datadump/Random_Testing/4/dat/reid_receive_1.dat', 'rb');  % Open the file in binary mode
+fileID = fopen('/home/torps/CommSense/Datadump/Random_Testing/dat/reid_receive_1.dat', 'rb');  % Open the file in binary mode
 
 % Read the entire data as double (64 bits = 8 bytes per value)
 data = fread(fileID, 'double');  % 'double' reads 64-bit floating-point values

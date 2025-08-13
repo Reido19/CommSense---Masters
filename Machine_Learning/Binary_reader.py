@@ -120,5 +120,3 @@ def get_pandas_dataFrame(folder_path):
 
     return final_df, orginal_df
 
-
-

@@ -47,7 +47,7 @@ function [LTE_struct,eqGrid, hest1, rmsevm, peakevm] = SIB1RecoveryExample_edite
         channelFigure = figure('Visible','off');        
     end
     [spectrumScope,synchCorrPlot,pdcchConstDiagram] = ...
-        hSIB1RecoveryExamplePlots(channelFigure,sr); 
+        hSIB1RecoveryExamplePlots(channelFigure,sr);
     % PDSCH EVM
     pdschEVM = comm.EVM();
     pdschEVM.MaximumEVMOutputPort = true;
@@ -62,8 +62,8 @@ function [LTE_struct,eqGrid, hest1, rmsevm, peakevm] = SIB1RecoveryExample_edite
     end
     
     % Display received signal spectrum
-    % fprintf('\nPlotting received signal spectrum...\n');  % Comment out to remove display graphs
-    % % spectrumScope(awgn(eNodeBOutput, 100.0));             % Comment out to remove display graphs
+    fprintf('\nPlotting received signal spectrum...\n');  % Comment out to remove display graphs
+    % spectrumScope(awgn(eNodeBOutput, 100.0));             % Comment out to remove display graphs
     spectrumScope(eNodeBOutput);
 
     if (sr~=ofdmInfo.SamplingRate)
@@ -137,8 +137,8 @@ function [LTE_struct,eqGrid, hest1, rmsevm, peakevm] = SIB1RecoveryExample_edite
     enb.NCellID = enbMax.NCellID;
     
     % Plot PSS/SSS correlation and threshold
-    % synchCorrPlot.YLimits = [0 max([corr{1}; threshold])*1.1];  % Comment out to remove display graphs
-    % synchCorrPlot([corr{1} threshold*ones(size(corr{1}))]);     % Comment out to remove display graphs
+    synchCorrPlot.YLimits = [0 max([corr{1}; threshold])*1.1];  % Comment out to remove display graphs
+    synchCorrPlot([corr{1} threshold*ones(size(corr{1}))]);     % Comment out to remove display graphs
     
 
     % Perform timing synchronization
@@ -199,8 +199,8 @@ function [LTE_struct,eqGrid, hest1, rmsevm, peakevm] = SIB1RecoveryExample_edite
     [bchBits, bchBits_before_fec, pbchSymbols, nfmod4, mib, enb.CellRefP] = ltePBCHDecode_edited( ...
         enb, pbchRx, pbchHest, nest); 
 
-    % figure()
-    % scatter(real(pbchSymbols), imag(pbchSymbols))     % Comment out to display graph
+    figure()
+    scatter(real(pbchSymbols), imag(pbchSymbols))     % Comment out to display graph
     % scatter(real(pbchHest), imag(pbchHest))
 
     % Parse MIB bits
@@ -386,7 +386,7 @@ function [LTE_struct,eqGrid, hest1, rmsevm, peakevm] = SIB1RecoveryExample_edite
             [pdcchRx, pdcchHest] = lteExtractResources(pdcchIndices, rxsubframe, hest);
             % Decode PDCCH and plot constellation
             [dciBits, pdcchSymbols] = ltePDCCHDecode(enb, pdcchRx, pdcchHest, nest);
-            % pdcchConstDiagram(pdcchSymbols);        % Comment out to remove display graphs
+            pdcchConstDiagram(pdcchSymbols);        % Comment out to remove display graphs
     
             fprintf('PDCCH search for SI-RNTI...\n\n');
             pdcch = struct('RNTI', 65535);  
@@ -458,7 +458,7 @@ function [LTE_struct,eqGrid, hest1, rmsevm, peakevm] = SIB1RecoveryExample_edite
         % Update channel estimate plot 
         figure(channelFigure);                          % Comment out to remove display graphs
         surf(abs(hest(:,:,1,1)));                       % Comment out to remove display graphs
-        % hSIB1RecoveryExamplePlots(channelFigure);       % Comment out to remove display graphs
+        hSIB1RecoveryExamplePlots(channelFigure);       % Comment out to remove display graphs
 
         
         % Make axes and figure background clearer
@@ -474,11 +474,10 @@ function [LTE_struct,eqGrid, hest1, rmsevm, peakevm] = SIB1RecoveryExample_edite
         % Optional: set white background
         set(gcf, 'Color', 'w');
         string_num = num2str(counter);
-        fprintf('Counter: %d',counter);
-        est_filename = "/home/torps/CommSense/Datadump/Testing/Wheelchair_Testing/6/Images"+string_num+".png";
-        
-        % saveas(channelFigure,est_filename);
-        
+        est_filename = '/home/torps/CommSense/Datadump/Random_Testing/1/Images/Channel_Estimation'+string_num+'.png';
+        if mod(counter, 5) == 0
+            saveas(channelFigure,'/home/torps/CommSense/Datadump/Random_Testing/1/Images/Channel_Estimation.png')
+        end
         % channelFigure.CurrentAxes.XLim = [0 size(hest,2)+1];
         % channelFigure.CurrentAxes.YLim = [0 size(hest,1)+1];
         
